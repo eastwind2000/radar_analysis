@@ -1,6 +1,9 @@
-      program read_radar
-      implicit none    
-	include 'define_DataType.f'
+! reading CINRAD Level2 data
+! Author: chentao@cma.goc.cn
+
+	program read_radar
+    implicit none    
+	include 'define_DataType.f90'
 
 	integer*4 i
 	integer*4 year,mon,day
@@ -9,7 +12,6 @@
       
 	type(radar_record) :: radar1
 	type(radar_grads ) :: radar1ch
-
 
 	real x0,y0,xc,yc
 	integer nr,nElevationAngle
@@ -30,33 +32,31 @@
 	open(22,file=fname,form='binary')
 
 	tim=0
-      flag=1
+    flag=1
 	lev=1
 
 	do while(.not.eof(12))
 	   read(12)radar1
 
-         print*,radar1%message_type, radar1%channel
+       print*,radar1%message_type, radar1%channel
 	   print*, radar1%unused1, sizeof(radar1)
 
 	   stop
-
         
 	  if(nr==0)then
-	   print*,radar1% DopplerGateSize, radar1%ReflectivityGateSize
-        endif
-c	   stop
+	     print*,radar1% DopplerGateSize, radar1%ReflectivityGateSize
+      endif
 
-c	   write(21,*)  i,radar1%DataNumber,(dble(radar1%ElevationAngle)/8)*(180./4096.), 
-c     $              (dble(radar1% AzimuthAngle)/8)*(180./4096.)
+	  !c	   stop
+!c	   write(21,*)  i,radar1%DataNumber,(dble(radar1%ElevationAngle)/8)*(180./4096.), 
+!c     $              (dble(radar1% AzimuthAngle)/8)*(180./4096.)
 	
 	   call radar_transform(radar1, radar1ch)
 
 	   if (nr>1.and.radar1%DataNumber==1)then
 	      
 		  lev=0
-	      write(22)sid, radar1ch%y_dbz(460), radar1ch%x_dbz(460),
-     $               tim, lev, flag
+	      write(22)sid, radar1ch%y_dbz(460), radar1ch%x_dbz(460),  tim, lev, flag
 	      close(22)
 
    	      nElevationAngle=nElevationAngle+1
@@ -68,18 +68,16 @@ c     $              (dble(radar1% AzimuthAngle)/8)*(180./4096.)
 	      lev=1
 
 	      do i=1,460
-	         write(22)sid, radar1ch%y_dbz(i), radar1ch%x_dbz(i),
-     $                 tim, lev, flag, radar1ch%dbz(i)
-            enddo
+	         write(22)sid, radar1ch%y_dbz(i), radar1ch%x_dbz(i), tim, lev, flag, radar1ch%dbz(i)
+          enddo
 
          else
 
 	      do i=1,460
-	         write(22)sid, radar1ch%y_dbz(i), radar1ch%x_dbz(i),
-     $                 tim, lev, flag, radar1ch%dbz(i)
-c	         print*, radar1ch%y_dbz(i), radar1ch%x_dbz(i),
-c     $                 radar1ch%dbz(i)
-            enddo
+	         write(22)sid, radar1ch%y_dbz(i), radar1ch%x_dbz(i),tim, lev, flag, radar1ch%dbz(i)
+!c	         print*, radar1ch%y_dbz(i), radar1ch%x_dbz(i),
+!c     $                 radar1ch%dbz(i)
+          enddo
             
 
 	   endif
@@ -87,14 +85,11 @@ c     $                 radar1ch%dbz(i)
 	nr=nr+1
 	enddo
 
-      lev=0
-	write(22)sid, radar1ch%y_dbz(460), radar1ch%x_dbz(460),
-     $               tim, lev, flag
+    lev=0
+	write(22)sid, radar1ch%y_dbz(460), radar1ch%x_dbz(460), tim, lev, flag
 	close(22)
 
-
 	print*, 'There are ',nr,' records in this Archive File'
-
 
 	call get_date(radar1%radical_collect_date,year,mon,day)
 
@@ -106,7 +101,7 @@ c     $                 radar1ch%dbz(i)
 
 	subroutine radar_transform(ra1, ra1ch)
 	implicit none
-	include 'define_DataType.f'
+	include 'define_DataType.f90'
 	type(radar_record) :: ra1
 	type(radar_grads ) :: ra1ch
 	integer*4 i,j,k
@@ -123,7 +118,6 @@ c     $                 radar1ch%dbz(i)
       
 !	ra1ch%x0=116.4719  ! Beijing
 !     ra1ch%y0=39.8089  ! Beijing
-
 
 
 	ra1ch % AzimuthAngle   = (dble(ra1%AzimuthAngle   )/8)*(180./4096.)
@@ -242,9 +236,9 @@ c     $                 radar1ch%dbz(i)
 	integer*4 hour,minute,seconds
 
      	Seconds=liMilliSeconds/1000  
-	hour = Seconds/3600 
-	minute= (Seconds-hour*3600)/60 
-	seconds = Seconds -(60*hour+minute)*60 
+		hour = Seconds/3600 
+		minute= (Seconds-hour*3600)/60 
+		seconds = Seconds -(60*hour+minute)*60 
 
       print*,hour,minute,seconds
 

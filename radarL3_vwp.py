@@ -21,7 +21,7 @@ vwp_lev  = np.array([0.3, 0.6, 0.9, 1.2, 1.5, 1.8,  \
 
 
 # fname = "Z_RADR_I_Z9200_20190505000000_P_DOR_SA_VWP_20_NUL_NUL.200.bin"  # have to be unzipped
-fname = "../mesoanalysis/vwp_z9200/Z_RADR_I_Z9200_20190505070000_P_DOR_SA_VWP_20_NUL_NUL.200.bin"
+fname = "../mesoanalysis/vwp_z9200/Z_RADR_I_Z9200_20190505234200_P_DOR_SA_VWP_20_NUL_NUL.200.bin"
 
 finfo = os.popen("basename " + fname).readlines()
 radarid = finfo[0][9:9+5]
@@ -74,7 +74,7 @@ ax.set_ylabel("Height km", fontsize=12)
 
 ax.set_xticks(xpos[:, 0])
 ax.set_xticklabels(cdate_list)
-ax.set_xlabel("Time DDHHMMSS", fontsize=12)
+ax.set_xlabel("Time HHMMSS", fontsize=12)
 
 plt.savefig("test_vwp.png", dpi=300)
 # plt.show()
