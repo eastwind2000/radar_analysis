@@ -1,4 +1,10 @@
-# Author: chentao@cma.gov.cn
+"""
+NEXRAD level3 data format reference from 
+https://wenku.baidu.com/view/625d512b69eae009581becbb.html                  cinrad level3 format  same with NEXRAD LEVEL3 data
+https://wenku.baidu.com/view/3f8758cc03d8ce2f006623d9.html?fr=search&pn=50  ncdc level3 data document
+Author: chentao@cma.gov.cn
+Date:   2020-05-09
+"""
 
 import numpy as np
 import struct
@@ -9,7 +15,7 @@ def read_cinrad_vwp48(fname):
 
     # ====================== begin decode vwp file ===================
 
-    wind_list = []
+    wind_list = []                                 # create empty list
 
     logging.basicConfig(filename="vwp_decode.log", level=logging.INFO, filemode="w")
     
@@ -85,8 +91,7 @@ def read_cinrad_vwp48(fname):
             if cn==b'ND':
                 wind_list.append([pos, cx, cy, np.nan, np.nan])
                 # print("Symbology block for windbarb(pcode=8): ", pos, cx, cy, undef, undef)
-                logging.info("Symbology block for windbarb(pcode=8): " + str( [pos, cx, cy, np.nan, np.nan] ))
-                
+                logging.info("Symbology block for windbarb(pcode=8): " + str( [pos, cx, cy, np.nan, np.nan] ))               
         elif(pcode==4):
             plength  = struct.unpack(">h", databufr[pos:pos+2])[0]
             wcolor   = struct.unpack(">h", databufr[pos+2:pos+4])[0] 
@@ -107,7 +112,7 @@ def read_cinrad_vwp48(fname):
     blocksep      = struct.unpack(">h", databufr[pos:pos+2])
     blockcode     = struct.unpack(">h", databufr[pos+2:pos+4])
     blocklength   = struct.unpack(">i", databufr[pos+4:pos+8])[0]
-    pos = pos + 8 + 120 + 2
+    pos = pos + 8 + 120 + 2                                          # 120 for size of repeated  msg_head + product_des
     numpage      = struct.unpack(">h", databufr[pos:pos+2])[0]
     pos = pos + 2
 
@@ -118,11 +123,10 @@ def read_cinrad_vwp48(fname):
                 datachar = struct.unpack(">" + str(numchar)+"s",databufr[pos+2:pos+2+numchar] )
                 pos = pos+2+numchar
                 print("   ", numchar, datachar )
-            elif (numchar==-1):
+            elif (numchar==-1):               # meet page_end_sep
                 # pageendsep= struct.unpack(">h", databufr[pos+2+numchar:pos+2+numchar+2] )
                 # print("   blockcode:", blockcode, blocklength, ipage,  numchar,  datachar, pageendsep, pos)
                 break
-
     
     wpbufr = np.array(wind_list)
     

@@ -9,10 +9,6 @@ import os
 
 from read_cinrad_vwp48 import *
 
-#
-# https://wenku.baidu.com/view/625d512b69eae009581becbb.html                  cinrad level3 format  same with WSR88D LEVEL3 data
-# https://wenku.baidu.com/view/3f8758cc03d8ce2f006623d9.html?fr=search&pn=50  ncdc level3 data document
-#
 
 undef = -999
 
