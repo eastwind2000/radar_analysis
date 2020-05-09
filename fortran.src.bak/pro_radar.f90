@@ -45,7 +45,7 @@ program read_radar
 	   
 
        print*,radar1%message_type, radar1%channel
-	   print*, radar1%unused1, sizeof(radar1)
+	!    print*, radar1%unused1, sizeof(radar1)
 
 	       
 	  if(nr==0)then
@@ -65,7 +65,9 @@ program read_radar
 	      close(22)
 
    	      nElevationAngle=nElevationAngle+1
-	      write(fname,'(a14,i2.2,a4)')'radar_grads_ne',nElevationAngle,'.grd'     	      
+		  
+			 write(fname,'(a14,i2.2,a4)')'radar_grads_ne',nElevationAngle,'.grd'     	      
+		  
 	      open(22,file=fname,form='binary')
 
 	      tim=0
@@ -87,7 +89,7 @@ program read_radar
 	   
 		nr=nr+1
 
-		print*, nr
+		! print*, nr
 
 	enddo
 

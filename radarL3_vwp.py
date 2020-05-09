@@ -1,6 +1,7 @@
-
+#
 # Author: chentao@cma.gov.cn
 # Date: 2020-05-08
+#
 
 from pylab import *
 import time
@@ -9,8 +10,7 @@ import os
 
 from read_cinrad_vwp48 import *
 
-
-undef = -999
+# undef = -999
 
 # fixed VWP levels?
 vwp_lev  = np.array([0.3, 0.6, 0.9, 1.2, 1.5, 1.8,  \
@@ -21,12 +21,15 @@ vwp_lev  = np.array([0.3, 0.6, 0.9, 1.2, 1.5, 1.8,  \
 
 
 # fname = "Z_RADR_I_Z9200_20190505000000_P_DOR_SA_VWP_20_NUL_NUL.200.bin"  # have to be unzipped
-fname = "../mesoanalysis/vwp_z9200/Z_RADR_I_Z9200_20190505234200_P_DOR_SA_VWP_20_NUL_NUL.200.bin"
+# fname = "../mesoanalysis/vwp_z9200/Z_RADR_I_Z9200_20190505234200_P_DOR_SA_VWP_20_NUL_NUL.200.bin"
+fname = "./data/Z_RADR_I_Z9200_20190505000000_P_DOR_SA_VWP_20_NUL_NUL.200.bin"
 
 finfo = os.popen("basename " + fname).readlines()
+
 radarid = finfo[0][9:9+5]
 cdate   = finfo[0][15:15+14]
 print(radarid, cdate)
+
 cyear   = cdate[0:4]
 cmon    = cdate[4:6]
 cday    = cdate[6:8]
@@ -37,9 +40,9 @@ cdate_list = []
 
 for imin in np.arange(-60, 6, 6):
     ndate = datetime.datetime(int(cyear), int(cmon), int(cday), int(chour),int(cmin)) + datetime.timedelta(minutes=int(imin))
-    cdate = ndate.strftime("%Y%m%d%H%M") + "00"
-    print(cdate)
-    cdate_list.append(cdate[8:14])
+    bdate = ndate.strftime("%Y%m%d%H%M") + "00"
+    print(bdate)
+    cdate_list.append(bdate[8:14])
 
 # print(cdate_list)
 
@@ -48,6 +51,7 @@ nlev  = len(vwp_lev)
 ntime = 11
 
 databufr = read_cinrad_vwp48(fname)
+
 vwp_data = databufr.reshape((ntime, nlev, 5))   # [time, lev, wdata]
 
 xpos = vwp_data[:, :, 1 ] 
@@ -59,12 +63,13 @@ wspd = vwp_data[:, :, 4 ]
 u = wspd*cos( (270-wdir)*pi/180  )
 v = wspd*sin( (270-wdir)*pi/180  )
 
-print(" ================== plot begin  =======\n")
+print(" ================== plot begin  ================\n")
 
-fig, ax = plt.subplots(figsize=(12, 8))
-ax.barbs(xpos, ypos, u, v, barb_increments={"half":4, "full":8, "flag":20})  # cutomize barbs 
-ax.set_title(fname)
+fig, ax = plt.subplots(figsize=(8, 6))
 
+ax.barbs(xpos, ypos, u, v, length=5, barbcolor="blue", flagcolor="red", barb_increments={"half":4, "full":8, "flag":20})  # cutomize barbs 
+
+ax.set_title(radarid + "_"+ cdate)
 # ax.set_xticks(xicks)
 ax.set_yticks(ypos[0, :])
 ax.set_yticklabels(vwp_lev[:])
@@ -76,6 +81,8 @@ ax.set_xticks(xpos[:, 0])
 ax.set_xticklabels(cdate_list)
 ax.set_xlabel("Time HHMMSS", fontsize=12)
 
-plt.savefig("test_vwp.png", dpi=300)
-# plt.show()
+figname = "VWP_" + radarid + "_" + cdate + ".png"
+print(figname)
+plt.savefig("./figs/" + figname,  dpi=600)
 
+# plt.show()

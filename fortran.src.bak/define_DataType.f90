@@ -1,5 +1,5 @@
 
-! cinrad msg_1 recorder format in length of 2432 bytes in little_endian
+! cinrad msg_1 type recorder(NEXRAD-Level2) format in length of 2432 bytes in little_endian
 ! Author: chentao@cma.goc.cn
 
 real, parameter:: pi=3.1415926
