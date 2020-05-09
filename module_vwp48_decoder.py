@@ -3,7 +3,7 @@ NEXRAD level3 data format reference from
 https://wenku.baidu.com/view/625d512b69eae009581becbb.html                  cinrad level3 format  same with NEXRAD LEVEL3 data
 https://wenku.baidu.com/view/3f8758cc03d8ce2f006623d9.html?fr=search&pn=50  ncdc level3 data document
 Author: chentao@cma.gov.cn
-Date:   2020-05-09
+Date:   2020-05-10
 """
 
 import numpy as np
