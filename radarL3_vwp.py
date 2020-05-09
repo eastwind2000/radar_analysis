@@ -13,21 +13,25 @@ from read_cinrad_vwp48 import *
 # undef = -999
 
 # fixed VWP levels?
+
 vwp_lev  = np.array([0.3, 0.6, 0.9, 1.2, 1.5, 1.8,  \
                      2.1, 2.4, 2.7, 3.0, 3.4, 3.7,  \
                      4.0, 4.3, 4.6, 4.9, 5.2, 5.5,  \
                      5.8, 6.1, 6.7, 7.3, 7.6, 7.9,  \
                      8.5, 9.1, 10.7, 12.2, 13.7, 15.2], dtype=np.float32)
 
-
-# fname = "Z_RADR_I_Z9200_20190505000000_P_DOR_SA_VWP_20_NUL_NUL.200.bin"  # have to be unzipped
 # fname = "../mesoanalysis/vwp_z9200/Z_RADR_I_Z9200_20190505234200_P_DOR_SA_VWP_20_NUL_NUL.200.bin"
-fname = "./data/Z_RADR_I_Z9200_20190505000000_P_DOR_SA_VWP_20_NUL_NUL.200.bin"
+
+fname = "./data/Z_RADR_I_Z9200_20200508060000_P_DOR_SA_VWP_20_NUL_NUL.200.bin"  # in UTC timezone
+
+# fname = "./data/20200508.140000.00.48.200"  # in BT timezone
+# radarid = "Z9200"
+# cdate   = "20200508140000"
 
 finfo = os.popen("basename " + fname).readlines()
-
 radarid = finfo[0][9:9+5]
 cdate   = finfo[0][15:15+14]
+
 print(radarid, cdate)
 
 cyear   = cdate[0:4]
@@ -50,7 +54,10 @@ for imin in np.arange(-60, 6, 6):
 nlev  = len(vwp_lev)
 ntime = 11
 
-databufr = read_cinrad_vwp48(fname)
+[databufr, lat, lon, lev]  = read_cinrad_vwp48(fname)
+
+# print(lat, lon, lev)
+# time.sleep(200)
 
 vwp_data = databufr.reshape((ntime, nlev, 5))   # [time, lev, wdata]
 
@@ -60,20 +67,24 @@ ypos = vwp_data[:, :, 2 ]
 wdir = vwp_data[:, :, 3 ]
 wspd = vwp_data[:, :, 4 ]
 
-u = wspd*cos( (270-wdir)*pi/180  )
-v = wspd*sin( (270-wdir)*pi/180  )
+u = wspd*cos((270-wdir)*pi/180)
+v = wspd*sin((270-wdir)*pi/180)
+
+print(" ===============================================")
 
 print(" ================== plot begin  ================\n")
 
 fig, ax = plt.subplots(figsize=(8, 6))
+ax.set_title(radarid + "_"+ cdate + " UTC")
 
-ax.barbs(xpos, ypos, u, v, length=5, barbcolor="blue", flagcolor="red", barb_increments={"half":4, "full":8, "flag":20})  # cutomize barbs 
-
-ax.set_title(radarid + "_"+ cdate)
 # ax.set_xticks(xicks)
+
+ax.barbs(xpos, ypos, u, v, length=6, barbcolor="blue", flagcolor="red", barb_increments={"half":2, "full":4, "flag":20})  # cutomize barbs  
+
 ax.set_yticks(ypos[0, :])
 ax.set_yticklabels(vwp_lev[:])
 ax.invert_yaxis()
+# ax.set_ylim(480, 10)
 
 ax.set_ylabel("Height km", fontsize=12)
 
@@ -82,7 +93,7 @@ ax.set_xticklabels(cdate_list)
 ax.set_xlabel("Time HHMMSS", fontsize=12)
 
 figname = "VWP_" + radarid + "_" + cdate + ".png"
-print(figname)
+print(figname, lat, lon, lev)
 plt.savefig("./figs/" + figname,  dpi=600)
 
 # plt.show()

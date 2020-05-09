@@ -104,7 +104,7 @@ def read_cinrad_vwp48(fname):
             wind_list.append([pos, wx, wy, wdir, wspd])
         elif(pcode==-1):
             pos=pos-2
-            print( "  symbology block finished ", pos)
+            print( "   symbology block finished ", pos)
             break
 
     print("4. =================================", pos)
@@ -133,6 +133,10 @@ def read_cinrad_vwp48(fname):
     print("   wprofile shape:", wpbufr.shape)    
     print("5. VWP Decoding finished ")   
     print("   =====================\n")
+
+    latitude = float(latitude)/1000.0
+    longitude = float(longitude)/1000.0
+    lev       = float(lev)*0.3048       # feet to m
     
-    return wpbufr
+    return [wpbufr, latitude, longitude, lev]
     
