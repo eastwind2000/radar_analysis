@@ -1,8 +1,9 @@
 ! reading CINRAD Level2 data
 ! Author: chentao@cma.goc.cn
 
-	program read_radar
+program read_radar
     implicit none    
+
 	include 'define_DataType.f90'
 
 	integer*4 i
@@ -22,13 +23,16 @@
 	character*8 sid
       
 
-	open(12,file='Z_RADR_I_Z9220_20070812150000_O_DOR_SA_CAP.bin',form='binary')
+	open(12,file='../data/Z_RADR_I_Z9200_20140508123000_O_DOR_SA_CAP.bin',form='binary', status="old" )
 
 	print*,'The recold length of SA Radar data: ', sizeof(radar1)
-      
+     
 	nr=0
-      nElevationAngle	= 1
+	
+	nElevationAngle	= 1
+	
 	write(fname,'(a14,i2.2,a4)')'radar_grads_ne',nElevationAngle,'.grd'
+	
 	open(22,file=fname,form='binary')
 
 	tim=0
@@ -36,13 +40,14 @@
 	lev=1
 
 	do while(.not.eof(12))
+
 	   read(12)radar1
+	   
 
        print*,radar1%message_type, radar1%channel
 	   print*, radar1%unused1, sizeof(radar1)
 
-	   stop
-        
+	       
 	  if(nr==0)then
 	     print*,radar1% DopplerGateSize, radar1%ReflectivityGateSize
       endif
@@ -53,7 +58,7 @@
 	
 	   call radar_transform(radar1, radar1ch)
 
-	   if (nr>1.and.radar1%DataNumber==1)then
+	   	if (nr>1.and.radar1%DataNumber==1)then
 	      
 		  lev=0
 	      write(22)sid, radar1ch%y_dbz(460), radar1ch%x_dbz(460),  tim, lev, flag
@@ -73,29 +78,32 @@
 
          else
 
-	      do i=1,460
+	     do i=1,460
 	         write(22)sid, radar1ch%y_dbz(i), radar1ch%x_dbz(i),tim, lev, flag, radar1ch%dbz(i)
-!c	         print*, radar1ch%y_dbz(i), radar1ch%x_dbz(i),
-!c     $                 radar1ch%dbz(i)
-          enddo
-            
-
-	   endif
+!c	         print*, radar1ch%y_dbz(i), radar1ch%x_dbz(i), radar1ch%dbz(i)
+		 enddo
+		
+		endif
 	   
-	nr=nr+1
+		nr=nr+1
+
+		print*, nr
+
 	enddo
+
+
 
     lev=0
 	write(22)sid, radar1ch%y_dbz(460), radar1ch%x_dbz(460), tim, lev, flag
 	close(22)
 
-	print*, 'There are ',nr,' records in this Archive File'
+	print*, 'There are ', nr, ' records in this Archive File'
 
-	call get_date(radar1%radical_collect_date,year,mon,day)
+	call get_date(radar1%radical_collect_date, year, mon, day)
 
 	call GetRadialTime(radar1%radical_collect_time,hour,minute,seconds)
 
-	end program 
+end program 
 
 
 
@@ -125,8 +133,7 @@
       ra1ch % FirstGateRangeOfRef = dble(ra1%FirstGateRangeOfRef)
 	ra1ch % FirstGateRangeOfDoppler=dble(ra1%FirstGateRangeOfDoppler)
 	do k=1,11
-	   if ( ra1ch%ElevationAngle >= (vcp21(k)-0.3).and. 
-     $        ra1ch%ElevationAngle <= (vcp21(k)+0.3) )then
+	   if ( ra1ch%ElevationAngle >= (vcp21(k)-0.3).and. ra1ch%ElevationAngle <= (vcp21(k)+0.3) )then
               ra1ch%ElevationAngle=vcp21(k)
 	   endif
       enddo
@@ -136,11 +143,9 @@
 
 	   distance= ra1ch%FirstGateRangeOfRef + (i-1)*ra1%ReflectivityGateSize 
 
-         dx=distance*cos(ra1ch%ElevationAngle*pi/180. )
-     $              *cos( (90-ra1ch%AzimuthAngle)*pi/180  )
+       dx=distance*cos(ra1ch%ElevationAngle*pi/180. ) * cos( (90-ra1ch%AzimuthAngle)*pi/180  )
 
-	   dy=distance*cos(ra1ch%ElevationAngle*pi/180. )
-     $              *sin( (90-ra1ch%AzimuthAngle)*pi/180  )
+	   dy=distance*cos(ra1ch%ElevationAngle*pi/180. ) * sin( (90-ra1ch%AzimuthAngle)*pi/180  )
          
 	   dlon= (dx/(Re*cos( ra1ch%y0*pi/180 )))*180/pi
 
@@ -169,10 +174,8 @@
 	do i=1,920
 	
          distance = ra1ch%FirstGateRangeOfDoppler +(i-1)*ra1%DopplerGateSize
-         ra1ch%x_dpl(i)=distance*cos(ra1ch%ElevationAngle*pi/180. )
-     $                          *cos( (90+ra1ch%AzimuthAngle)*pi/180  )
-         ra1ch%y_dpl(i)=distance*cos(ra1ch%ElevationAngle*pi/180. )
-     $                          *sin( (90+ra1ch%AzimuthAngle)*pi/180  )
+         ra1ch%x_dpl(i)=distance*cos(ra1ch%ElevationAngle*pi/180. ) * cos( (90+ra1ch%AzimuthAngle)*pi/180  )
+         ra1ch%y_dpl(i)=distance*cos(ra1ch%ElevationAngle*pi/180. ) * sin( (90+ra1ch%AzimuthAngle)*pi/180  )
          ra1ch%z_dpl(i)=distance*sin(ra1ch%ElevationAngle*pi/180. )	
 
 	   velc=real( ichar( ra1%vel(i) )  )

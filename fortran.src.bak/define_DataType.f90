@@ -11,17 +11,17 @@ type radar_record
 	character*2    channel
 	character*10   unused2
 
-	integer*4    radical_collect_time   !!  �������ϲɼ���GMTʱ��(����)
-	integer*2    radical_collect_date   !!  �����գ�Julian����ʾ����1970��1��1�տ�ʼ
+	integer*4    radical_collect_time    	 !!  �������ϲɼ���GMTʱ��(����)
+	integer*2    radical_collect_date    	 !!  �����գ�Julian����ʾ����1970��1��1�տ�ʼ
 
-	integer*2      unambiguousRange      !! ��ģ������,��λ:0.1Km
-	integer*2      AzimuthAngle          !!��λ�ǣ�[��ֵ/8.]*[180./4096.]=�ȣ�
-	integer*2      DataNumber            !! ��ǰ�����ھ����������
-	integer*2      DataStatus            !! ��������״̬
+	integer*2      unambiguousRange    	     !! ��ģ������,��λ:0.1Km
+	integer*2      AzimuthAngle              !!��λ�ǣ�[��ֵ/8.]*[180./4096.]=�ȣ�
+	integer*2      DataNumber            	 !! ��ǰ�����ھ����������
+	integer*2      DataStatus            	 !! ��������״̬
 
-	integer*2      ElevationAngle        !!����
-	integer*2      ElevationNumber       !!��ɨ�ڵ����Ǳ��
-	integer*2      FirstGateRangeOfRef   !!��һ��ǿ�ȿ�ľ���(��)
+	integer*2      ElevationAngle         !!����
+	integer*2      ElevationNumber        !!��ɨ�ڵ����Ǳ��
+	integer*2      FirstGateRangeOfRef    !!��һ��ǿ�ȿ�ľ���(��)
 	integer*2      FirstGateRangeOfDoppler !!��һ���ٶ�/�׿���ľ���(��)
 	integer*2      ReflectivityGateSize   !! ǿ�ȿⳤ(��)
 	integer*2      DopplerGateSize        !!�ٶ�/�׿�����
