@@ -11,7 +11,6 @@ import os
 import csv
 from module_vwp48_decoder import *
 
-
 def vwpdata_pro(fname, interm_datadir, fig_dir):               # make intermediate VWP data and figs
 
     # fixed VWP levels?
@@ -67,6 +66,10 @@ def vwpdata_pro(fname, interm_datadir, fig_dir):               # make intermedia
 
     u = wspd*cos((270-wdir)*pi/180)
     v = wspd*sin((270-wdir)*pi/180)
+    
+    u[isnan(u)] = -9999
+    v[isnan(v)] = -9999
+    
 
     print(" =======Generate intermediate vwpdata===========\n") 
 
