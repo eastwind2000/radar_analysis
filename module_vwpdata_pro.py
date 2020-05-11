@@ -26,7 +26,7 @@ def vwpdata_pro(fname, interm_datadir, fig_dir):               # make intermedia
     # radarid = "Z9200"
     # cdate   = "20200508140000"
 
-    finfo = os.popen("basename " + fname).readlines()
+    finfo   = os.popen("basename " + fname).readlines()
     radarid = finfo[0][9:9+5]
     cdate   = finfo[0][15:15+14]
 

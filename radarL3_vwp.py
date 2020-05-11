@@ -14,7 +14,11 @@ from module_vwpdata_pro import *
 
 flist = os.popen("find /home/lse/fs02/vgdisk02/datamusic/radarL3_vwp/ -name '*202005080000*.bin'" ).readlines()
 
+# print(flist)
+
 numfile = len(flist)
+
+# time.sleep(200)
 
 interm_dir = "./vwp_interm/"
 fig_dir    = "./figs/"
