@@ -67,25 +67,6 @@ def vwpdata_pro(fname, interm_datadir, fig_dir):               # make intermedia
     u = wspd*cos((270-wdir)*pi/180)
     v = wspd*sin((270-wdir)*pi/180)
     
-    u[isnan(u)] = -9999
-    v[isnan(v)] = -9999
-    
-
-    print(" =======Generate intermediate vwpdata===========\n") 
-
-    interm_fname = interm_datadir + "vwp_interm_" + radarid + "_" + cdate + ".csv"
-
-    with open(interm_fname, "w") as csvfile:
-
-        writer = csv.writer(csvfile)
-        
-        buf_head = [radarid, lat, lon, lev, cdate]
-        writer.writerow(buf_head)
-
-        nrec = len(vwp_lev)
-        for irec in np.arange(nrec):
-            buf_vwp =  [ vwp_lev[irec], u[-1, irec], v[-1, irec]  ] 
-            writer.writerow(buf_vwp)
 
     print(" ================== plot begin  ================\n")
 
@@ -110,5 +91,25 @@ def vwpdata_pro(fname, interm_datadir, fig_dir):               # make intermedia
     figname = "VWP_" + radarid + "_" + cdate + ".png"
     print(figname, lat, lon, lev)
     plt.savefig(fig_dir + figname,  dpi=450)
+
+    print(" =======Generate intermediate vwpdata; set with nan=-9999 ===========\n") 
+
+    u[isnan(u)] = -9999
+    v[isnan(v)] = -9999
+
+    interm_fname = interm_datadir + "vwp_interm_" + radarid + "_" + cdate + ".csv"
+
+    with open(interm_fname, "w") as csvfile:
+
+        writer = csv.writer(csvfile)
+        
+        buf_head = [radarid, lat, lon, lev, cdate]
+        writer.writerow(buf_head)
+
+        nrec = len(vwp_lev)
+        for irec in np.arange(nrec):
+            buf_vwp =  [ vwp_lev[irec], u[-1, irec], v[-1, irec]  ] 
+            writer.writerow(buf_vwp)
+
 
     # plt.show()

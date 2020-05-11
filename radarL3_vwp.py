@@ -6,7 +6,6 @@
 #
 #
 
-
 from pylab import *
 import os 
 import time
@@ -24,10 +23,10 @@ for ifile in flist:
     
     fname = ifile.strip("\n")
 
-    vwpdata_pro(fname, interm_dir, fig_dir)
+    vwpdata_pro(fname, interm_dir, fig_dir)   
 
     # time.sleep(200)
 
-    
+ 
   
 
