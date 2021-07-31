@@ -1,6 +1,6 @@
 """
 NEXRAD level3 data format reference from 
-https://wenku.baidu.com/view/625d512b69eae009581becbb.html                  CINRAD or NEXRAD PUP level3 format
+https://wenku.baidu.com/view/625d512b69eae009581becbb.html        CINRAD and NEXRAD PUP level3 format
 https://wenku.baidu.com/view/3f8758cc03d8ce2f006623d9.html?fr=search&pn=50  NCDC level3 data document
 Author: chentao@cma.gov.cn
 Date:   2020-05-10
@@ -134,7 +134,7 @@ def read_cinrad_vwp48(fname):
     print("5. VWP Decoding finished ")   
     print("   =====================\n")
 
-    latitude = float(latitude)/1000.0
+    latitude  = float(latitude)/1000.0
     longitude = float(longitude)/1000.0
     lev       = float(lev)*0.3048       # feet to m
     
