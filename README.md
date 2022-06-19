@@ -3,7 +3,10 @@
 - decoder according to NEXRAD Level3 VWP-48 product
 - adding S/X Dpol-Radar products, ZDR, KDP, CC and HCA
 
-# S-band Radar HCA example
+# X-band Radar HCA RH
+![VWP](./figs/ZZH01_HCA_SEC_20220511000023_sec_000.png )
+
+# S-band Radar HCA PPI
 ![VWP](./figs/Z9200_hca_20220511000000_swp00.png)
 
 # VAD wind profile example
