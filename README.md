@@ -3,7 +3,7 @@
 - decoder according to NEXRAD Level3 VWP-48 product
 - adding S/X Dpol-Radar products, ZDR, KDP, CC and HCA
 
-# X-band Radar HCA RH
+# X-band Radar HCA RHI
 ![VWP](./figs/ZZH01_HCA_SEC_20220511000023_sec_000.png )
 
 # S-band Radar HCA PPI
