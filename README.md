@@ -3,6 +3,9 @@
 - decoder according to NEXRAD Level3 VWP-48 product
 - adding S/X Dpol-Radar products, ZDR, KDP, CC and HCA
 
+# Guangdong Zhuahai X-band Radar products on NMC
+![VWP](./figs/珠海XPAR.jpg )
+
 # X-band Radar HCA RHI
 ![VWP](./figs/ZZH01_HCA_SEC_20220511000023_sec_000.png )
 
