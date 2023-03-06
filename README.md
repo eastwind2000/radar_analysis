@@ -1,9 +1,10 @@
 # radar_analysis
-- CINRAD VWP48 Processing
-- Decoder according to NEXRAD Level3 VWP-48 product
-- Adding S/X Dpol-Radar products, ZDR, KDP, CC and HCA
+- CINRAD VWP48 Processing.
+- Decoder according to NEXRAD Level3 VWP-48 product.
+- Adding S/X Dpol-Radar products, ZDR, KDP, CC and HCA.
+- Using CMA-MESO temperatrue for HCA algorithm.
 
-# Guangdong Zhuhai X-band Radar products on NMC
+# Guangdong Zhuhai X-band Radar products in NMC
 ![VWP](./figs/珠海XPAR.jpg )
 
 # X-band Radar HCA RHI
