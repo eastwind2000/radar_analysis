@@ -4,6 +4,11 @@
 - Adding S/X Dpol-Radar products, ZDR, KDP, CC and HCA.
 - Using CMA-MESO temperatrue for HCA algorithm.
 
+# Radar reflectivity factor 0-2h forecast in South China
+![VWP](./figs/test.gif )
+
+
+
 # Guangdong Zhuhai X-band Radar products in NMC
 ![VWP](./figs/珠海XPAR.jpg )
 
